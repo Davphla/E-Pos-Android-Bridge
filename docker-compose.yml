@@ -1,0 +1,29 @@
+services:
+    web:
+        image: odoo:16.0
+        container_name: odoo1
+        depends_on:
+            - db
+        ports:
+            - "8069:8069"
+            - "8072:8072"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        networks:
+            - tailscale-network
+
+    db:
+        image: postgres:15
+        container_name: odoo1_postgres
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_PASSWORD=odoo
+            - POSTGRES_USER=odoo
+        networks:
+            - tailscale-network
+networks:
+    tailscale-network:
+        driver: bridge
+volumes:
+    odoo1-web-data:
+    odoo1-db-data:
